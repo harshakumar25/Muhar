@@ -27,7 +27,7 @@ That is a coordination and governance problem as well as a cryptographic one. Au
 
 | Question after the exam | Evidence Muhar proposes | What still needs human trust or review |
 | --- | --- | --- |
-| Were eligibility rules and the question inventory fixed before the draw? | An institutionally authenticated, signed manifest; an independently witnessed log checkpoint; and a preselected future beacon round. | The bank auditor must assess whether the eligible items and labels were honest. |
+| Were eligibility rules and the question inventory fixed before the draw? | An institutionally authenticated, signed manifest; a witnessed per-session register with a uniqueness proof; a pre-seed checkpoint; and a preselected future beacon round. | Baseline timing depends on independent witnesses retaining their pre-seed evidence. The bank auditor must assess whether eligible items and labels were honest. |
 | Was the paper drawn by the published rules? | A deterministic replay using the disclosed ordered inventory, blueprint, algorithm, and [signature-verified beacon](https://docs.drand.love/docs/specification/). | If the reusable inventory cannot be disclosed, this claim becomes **auditor-attested**, not publicly reproduced. |
 | Was that paper sent to the centre? | A signed full paper package, exact content and rendered-file hashes, and operator and centre receipts. | A compromised centre can still misdisplay or copy the paper. Receipts are claims about delivery, not proof of pixels. |
 | Was there no leak, and was the exam fair? | **Muhar cannot certify either claim.** | Insider access, question quality, translations, accommodations, scoring, investigation, and remedies need separate controls. |
@@ -40,7 +40,7 @@ The public verifier should report each check as `VERIFIED`, `FAILED`, or `INCOMP
 Reviewed private question bank
          │  salted item commitments + signed blueprint
          ▼
-One frozen session manifest ──► witnessed transparency log ──► proposed Ethereum checkpoint
+One frozen session manifest ──► witnessed log + session index ──► shadow Ethereum checkpoint
          │
          ▼
 Precommitted future beacon round ──► deterministic draw
@@ -56,9 +56,9 @@ One legally accountable exam operator still decides whether to run, pause, or ca
 
 ## Does this need Ethereum?
 
-That is an experiment, not an article of faith. [Independent witnesses can already cosign a transparency log's checkpoints](https://blog.transparency.dev/can-i-get-a-witness-network/) and detect inconsistent histories. Ethereum may add a neutral, publicly accessible ordering and timestamp for a small checkpoint when institutions do not fully trust one another. It cannot authenticate an exam authority, make missing log data available, or prove an off-chain fact. There is no case for a token, candidate wallet, DAO, or new chain.
+That is an experiment, not an article of faith. [Independent witnesses can already cosign a transparency log's checkpoints](https://blog.transparency.dev/can-i-get-a-witness-network/) and detect inconsistent histories. Ethereum may add a neutral, publicly ordered checkpoint that can be checked for finality before the seed when institutions do not fully trust one another. It cannot authenticate an exam authority, make missing log data available, or prove an off-chain fact. There is no case for a token, candidate wallet, DAO, or new chain.
 
-The first pilot should compare **a witnessed log alone** with **the same log plus a finalized Ethereum anchor**. Inject a conflicting history and a late manifest; measure whether independent verifiers detect each case, and compare cost, finality delay, availability, and operator burden. If the anchor adds no meaningful protection, keep it out of the required path.
+The first mock should use **the witnessed log as its declared operational evidence profile**, while anchoring the same frozen checkpoint on Ethereum in a **research-only shadow arm**. The shadow result cannot authorize the exam or rescue a failed baseline check. Inject a conflicting history and a late manifest; compare what independent verifiers detect, along with cost, finality delay, availability, and operator burden. A later real Ethereum-required profile would need its own prepublished charter. If the anchor adds no meaningful protection, keep it out of the required path.
 
 ## Hard objections before a real exam
 
