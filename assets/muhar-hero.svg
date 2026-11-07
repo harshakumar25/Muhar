@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="title description">
+  <title id="title">Muhar — a verifiable seal for exams</title>
+  <desc id="description">An ivory MUHAR wordmark with a warm gold three-dimensional edge on a midnight-blue field, beside an open circular seal. The subtitle reads Public evidence for exam governance.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1328"/>
+      <stop offset="1" stop-color="#162749"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff9e8"/>
+      <stop offset="1" stop-color="#e5e9ef"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f9d989"/>
+      <stop offset="1" stop-color="#c87237"/>
+    </linearGradient>
+    <linearGradient id="seal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7df9e"/>
+      <stop offset="1" stop-color="#d78440"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity=".035" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1280" height="360" rx="24" fill="url(#background)"/>
+  <rect width="1280" height="360" rx="24" fill="url(#grid)"/>
+  <path d="M 70 64 H 810" stroke="#f0cb7c" stroke-opacity=".72" stroke-width="2"/>
+  <circle cx="1128" cy="-32" r="255" fill="#4b6c98" opacity=".09"/>
+  <circle cx="1190" cy="330" r="205" fill="#e8a65d" opacity=".055"/>
+
+  <!-- Repeated offsets give the wordmark a real visible side, including in static README renderers. -->
+  <g font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="142" font-weight="900" letter-spacing="4" stroke-linejoin="round">
+    <g fill="#8a4b2f" stroke="#8a4b2f" stroke-width="2">
+      <text x="96" y="210">MUHAR</text>
+      <text x="94" y="208">MUHAR</text>
+      <text x="92" y="206">MUHAR</text>
+    </g>
+    <g fill="url(#edge)" stroke="#c47d42" stroke-width="2">
+      <text x="90" y="204">MUHAR</text>
+      <text x="88" y="202">MUHAR</text>
+      <text x="86" y="200">MUHAR</text>
+      <text x="84" y="198">MUHAR</text>
+      <text x="82" y="196">MUHAR</text>
+      <text x="80" y="194">MUHAR</text>
+    </g>
+    <text x="78" y="190" fill="url(#face)" stroke="#fff4d7" stroke-width="1.5">MUHAR</text>
+  </g>
+
+  <text x="83" y="256" fill="#f1d8a0" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" letter-spacing="5">PUBLIC EVIDENCE FOR EXAM GOVERNANCE</text>
+  <text x="84" y="307" fill="#b8c8df" font-family="Arial, Helvetica, sans-serif" font-size="17" letter-spacing="1.5">A verifiable seal for exams</text>
+
+  <!-- The interrupted ring suggests a seal that can be inspected, not a promise of perfect secrecy. -->
+  <g transform="translate(6 9)" fill="none" stroke="#91562f" stroke-width="16" stroke-linecap="round">
+    <path d="M 1031 76 A 104 104 0 1 1 982 196"/>
+  </g>
+  <g fill="none" stroke="url(#seal)" stroke-width="16" stroke-linecap="round">
+    <path d="M 1031 76 A 104 104 0 1 1 982 196"/>
+  </g>
+  <circle cx="1052" cy="164" r="62" fill="#132340" stroke="#f0d89d" stroke-opacity=".42" stroke-width="2"/>
+  <path d="M 1023 164 L 1044 185 L 1085 143" fill="none" stroke="#f2d28f" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1019" y="324" fill="#d5dde8" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">मुहर</text>
+</svg>
