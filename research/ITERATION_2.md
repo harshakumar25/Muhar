@@ -1,0 +1,84 @@
+# Muhar, iteration 2: when evidence becomes useful
+
+**Date:** 9 November 2026  
+**Status:** adversarial design research for a one-centre, one-session exam using synthetic questions. No implementation, partner, candidate study, or live-exam result exists.
+
+**Subsequent scope revision:** [Iteration 3](ITERATION_3.md) adds sealed paper preparation to the first technical prototype and makes capacity and centre collusion mandatory gates. The log-witness and evidence-timing corrections below remain applicable.
+
+## Decision under review
+
+The first [war-room report](../WAR_ROOM_REPORT.md) chose a witnessed log with an authenticated per-session index as the operational baseline. That report overstated what a **standard** log witness checks. A witness verifies that a new checkpoint consistently extends an old one; it does not inspect leaves for a second freeze, validate Muhar's session rules, or certify an external index. [C2SP's witness protocol](https://c2sp.org/tlog-witness@main) describes consistency-proof checking, while [RFC 9162's monitor role](https://www.rfc-editor.org/rfc/rfc9162.html#section-8.2) explicitly inspects log entries. This is an architecture correction, not a change in the underlying exam problem.
+
+**Revised v0 decision:** first secure an actionable evidence and grievance charter with a willing mock-exam operator. Then build a *small, complete, witnessed log* that an independent content monitor scans and any later public verifier can scan again. Require two named independent consistency witnesses to cosign the **same** pre-seed checkpoint in the synthetic mock. Treat the pre-start scan as a provisional start gate; monitor new leaves through seed and start, then require later witnessed full scans before a final one-freeze result. Retain a final checkpoint after all candidate cases and appeals close. Keep one Ethereum anchor of the pre-seed checkpoint as a separately reported research experiment. Defer a log-backed session map until the log is large enough that full scans are a measured problem and the map's evolution can be checked.
+
+This is the narrow claim to test: **for the official session ID and the complete named log prefix committed by a retained checkpoint, there was exactly one authorized freeze event; its manifest and rules were available to independent observers before the chosen seed round, under the stated timing and observer assumptions.** It does not prove that no other manifest existed or was advertised outside the named log, that every bank item was honest, that the seed could not be learned slightly early, or that a candidate saw the signed pixels.
+
+## How the review was run
+
+Three parallel read-only reviewer perspectives challenged the prior design: protocol/security, India exam operations, and candidate/remedy skepticism. A pinned, local Think Tank orchestrator ran a **Codex-target cross-agent consultation** focused on A/B/C below; its substantive answer favored A for a small synthetic exam. The initial run's temporary output was lost during an interrupted tool session, so the consultation was [rerun and its raw transcript retained](think-tank-iteration2.md) against the updated documents. These are model reviews, not independent human experts. The earlier report's “100 perspectives” were a structured checklist, not 100 people. The Claude-backed Think Tank debate did **not** run because the local Claude CLI reported `Not logged in`; no multi-model result is claimed. The consultations' claims are checked against the cited primary sources and proposed fault tests. [The first-iteration consultation](think-tank-cross-agent.md) remains a separate record.
+
+The reviewers agreed that the proof should be evaluated against a decision the exam authority will actually take. They disagreed in emphasis: the protocol view saw an overclaimed uniqueness proof; the operations view saw handoff and centre constraints; the candidate view saw evidence arriving after the useful challenge period. The synthesis below keeps all three constraints.
+
+## A/B/C argument: what would one freeze mean?
+
+Here **A/B/C are second-iteration evidence designs**, not the first war-room report's institutional-records/log/chain labels. Bank review, signed charter, future beacon round, deterministic draw, CBT adapter, centre receipt, and grievance route are held constant.
+
+| Design | Positive proof | What it cannot infer | v0 judgement |
+| --- | --- | --- | --- |
+| **A. Complete small log + full scan** | Rebuild the Merkle root from every leaf through the named checkpoint, verify signatures, and count authorized freezes for the official session. Two witnesses preserve the same consistent checkpoint; an independent monitor scans promptly and signs a report bound to root, size, session, and policy version. | No freeze outside the named system; no unseen later leaf; no truthful wall clock from a hash; no bank quality or screen truth. Missing leaves prevent the count. | **Choose.** Direct, reviewable, and feasible for one synthetic session. |
+| **B. Log-backed authenticated session map** | A map lookup can prove the stored value for a session at a *particular map root*. To claim a unique freeze, a verifier must also check that every relevant log leaf was applied under insert-only rules and that the map root is bound to a trusted checkpoint. | A single lookup cannot prove no earlier overwrite or omitted second freeze. A standard log checkpoint signs its own size/root, not an arbitrary external index root. | **Defer.** Efficient lookup may matter at scale, but verified map evolution adds another protocol and trust boundary. |
+| **C. A + Ethereum one-time registry** | A pinned, reviewed registry can limit **registry writes** for the session; a public chain can preserve a digest of the pre-seed manifest and witnessed checkpoint if independent archives later fail. | It cannot establish one off-chain freeze without A, supply missing leaves, authenticate an exam authority, or protect post-seed exception events with a pre-seed-only anchor. Its timing claim needs evidence of finality *by* the seed, not eventual finality. | **Shadow experiment only.** Measure extra detection against cost, delay, and recovery burden. |
+
+The [C2SP checkpoint format](https://c2sp.org/tlog-checkpoint@v1.1.0) commits a log origin, tree size, and root hash. [Transparency.dev's log/map analysis](https://transparency.dev/articles/logs-vs-maps/) explains why a map lookup is easy while correct map evolution is harder to verify. Thus adding a session map without a rigorously checked log-to-map transition would make the apparent “uniqueness proof” less trustworthy than scanning this small log.
+
+The smallest counterexample is **one additional otherwise valid signed `Freeze` leaf for the same official session and a different manifest hash**. Append it to the same log before the seed. A consistency witness can cosign that perfectly append-only history. A naive session index can still point to the first leaf. A one-time registry can still show one write. A correct A verifier finds two freezes and returns `FAILED`; correct B and C designs must also reject the session. Append the duplicate *after* the first pre-round checkpoint but *before* the seed as a second timing test: monitoring must continue through the selected round and later signed checkpoints. A centre using only the old checkpoint could start provisionally; the later full scan must overturn the one-freeze claim and trigger the charter's incident/remedy path. A report about a finite prefix never proves that a future prefix will stay clean.
+
+## Timing is a separate claim
+
+**Witness time.** A pre-round signed checkpoint shows a root the witness says it had then. A signature can be created later over a backdated human-readable time. The operational claim therefore requires a prepublished schedule, independently retained contemporaneous checkpoint evidence, monitoring through the seed, and explicit disclosure of whose clocks/observations are trusted. A later verifier can verify signatures, roots, leaf counts, and consistency, but cannot derive real-world creation time from a Merkle hash alone.
+
+**Beacon time.** A valid [drand signature](https://docs.drand.love/docs/specification/) authenticates a round's randomness. It is not a proof that nobody could learn it early or delay public release. [Drand's security model](https://docs.drand.love/docs/security-model/) discusses front-running, withholding, outages, and threshold compromise. The charter must precommit one beacon chain and exact future round and state the pause/reschedule rule.
+
+**Ethereum time.** A transaction included in a block whose timestamp precedes the seed, and finalized **now**, may have become final only after that seed. [Ethereum's finality explanation](https://ethereum.org/roadmap/single-slot-finality) notes that finality takes time. The C result must specify a replayable historical finality proof or a contemporaneously retained independent finality observation and its trust assumptions. If that evidence is absent, report the pre-round-finality claim as `INCOMPLETE`; if it shows finality occurred late, report `FAILED`. The one anchor binds only its pre-seed prefix. Later cancellations, release events, and grievance outcomes need later witnessed checkpoints and preserved leaves; the shadow anchor cannot certify their history.
+
+## A real exam can pass every hash check and still fail students
+
+The candidate skeptic's strongest case is mundane: a full-bank insider knows every selected item once the public seed appears and leaks the form; an approved but poor translation harms one language group; or a centre signs for the right package while showing altered options. All Muhar's current cryptographic checks can pass. The proper output is a set of narrow evidence claims plus human audit and incident review, never a badge that an exam was “leak-free” or “fair.” The committee's [October 2026 recommendations](https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2321420&lang=1&reg=1) call for large banks, security audit, independent oversight, a secure grievance channel, and duty-of-care timelines; they are **recommendations**, not an endorsement or a ready Muhar grievance process.
+
+The operations reviewer found a concrete conflict with an ideal near-start paper release. An [NTA-hosted draft CBT tender](https://nta.ac.in/Download/Tender/Tender_20260302181817.pdf), internally labelled “Draft Version 1 as on 30 August 2024,” describes providing the bilingual question-paper soft copy **one hour before** exam start. The tender says it creates no contractual obligation until executed, and this is neither a universal rule nor proof that a current exam follows it. It is enough to require two predeclared mock schedules: a `T−60m` handoff and a near-start handoff. The seed must precede the chosen handoff. Measure draw-to-delivery latency, selected-form exposure time, late-entry/accessibility effects, centre link/power failures, and candidate inconvenience. Do not choose the winning schedule after observing a seed or failed run.
+
+**Actionability gate:** complete permitted proof must reach candidates while a procedural-integrity challenge and remedy are still available. If reusable-bank secrecy prevents timely public openings, an independent reviewer must get restricted full evidence before the deadline, produce a reviewable finding, and preserve a candidate's case/receipt until public disclosure can follow. A later public proof is useful for historical accountability but may not remedy an individual candidate. For scale, the operator must name the procedural case type, channel, no-fee rule for this mock, submission receipt, response owner/deadline, appeal and possible remedies. Do not assume an existing answer-key challenge process accepts this case: an [NTA UGC-NET notice](https://nta.ac.in/Download/Notice/Notice_20260114165903.pdf) gives a short, paid **answer-key** challenge window, which is a different issue.
+
+## Stage zero: evidence docket before software
+
+Seek a willing low-stakes mock operator and candidate representatives to review the [draft pilot charter](PILOT_CHARTER_DRAFT.md). The operator would authenticate the session ID, signing root, named log, two witness keys, monitor, and challenge route; the independent reviewer would confirm access to restricted evidence; candidate representatives would test whether the receipt and explanation are usable without a wallet or phone. Pre-register the handoff schedule, disclosure gate, response deadline, cancellation quorum, and fault tests before a seed exists. This is a proposal to negotiate, not a claim that any Indian authority has agreed.
+
+The first acceptance question is institutional: **will a failed or incomplete Muhar result trigger a timely, recorded response and a possible remedy?** If no operator will commit to that docket, a cryptographic draw is a research demo rather than an exam-integrity intervention.
+
+## Falsification ledger for the synthetic mock
+
+Each test is pre-registered against the exact verifier profile. `FAILED` means available evidence contradicts a required rule; `INCOMPLETE` means required evidence is unavailable or the timing claim cannot be established. No test has been run yet.
+
+| Injection or observation | Required result / lesson |
+| --- | --- |
+| Two valid freezes for the official session, in one consistent log | `FAILED` uniqueness; both witnesses may still cosign, and the content scan must catch it. |
+| Second freeze after the first pre-seed checkpoint but before the seed | A fresh monitor alert pauses the centre if seen before handoff/start; a later witnessed full scan must reject the final one-freeze claim even if a stale first-prefix snapshot allowed a provisional start. |
+| Map points to just one of two freezes, or its root is swapped without a trusted binding | `FAILED` or `INCOMPLETE`; a single lookup must never yield `VERIFIED` uniqueness. |
+| One of two named witness cosignatures is missing; or the signatures bind different roots | Pause under the mock's 2-of-2 rule; missing evidence is `INCOMPLETE`, conflicting roots are investigated and cannot verify. |
+| A leaf is withheld; or supplied leaves recompute to a different root | `INCOMPLETE` for unavailable complete history; `FAILED` for proven root mismatch. A chain root does not repair availability. |
+| Pre-round Ethereum inclusion finalizes only after the seed, or historic finality evidence is absent | C pre-round-finality `FAILED` if late is shown, otherwise `INCOMPLETE`; A's separately declared result is unaffected. |
+| Two post-seed exception histories share the one pre-seed anchor | C cannot choose between them; require post-exam and final post-appeal consistent witnessed checkpoints and complete leaves through each declared cutoff. |
+| A grievance or appeal outcome is logged after the `T+24h` proof bundle | The post-exam bundle remains a current-prefix report; the final witnessed scan after case closure must include the redacted outcome or mark that history `INCOMPLETE`. |
+| Full-bank insider leaks after seed; bad translation; altered centre pixels with matching receipt | May pass cryptographic checks: mark these as unproved trust boundaries and run bank, accessibility, and centre audits. |
+| Public proof arrives after the only usable remedy deadline, with no timely independent review | Fail the **pilot's candidate-actionability gate** even if cryptographic checks pass. |
+| `T−60m` versus near-start handoff simulation | Compare exposure, delivery latency, failure and accessibility outcomes; no schedule is assumed safe by default. |
+
+Stop progression if an injected invalid session receives `VERIFIED`, a witness outage is silently bypassed, the promised complete evidence is unavailable before the challenge gate, or an operator cannot answer a recorded procedural case. Advance toward live secrets only after independent protocol/security, bank-access, assessment-quality, privacy, device, accessibility, and incident reviews. Nothing in this note authorizes a public exam.
+
+## Open decisions
+
+1. Which willing operator can authenticate a mock session and accept a procedural-integrity case type with an accountable response?
+2. What evidence of **pre-round** witness observation and Ethereum finality can a stranger replay later, and whose clock/consensus assumptions does it require?
+3. What bank metadata and selected content may be disclosed before the remedy deadline without compromising reused questions? Who performs the timely confidential review otherwise?
+4. How are the two witnesses, content monitor, and bank auditor appointed, paid, rotated, and given archive custody so their independence is substantive?
+5. At what measured log size would a map save enough verification cost to justify verified map-evolution machinery?
